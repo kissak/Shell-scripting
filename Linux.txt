@@ -1,0 +1,1149 @@
+GENERAL INFORMATIONS
+Linux subsystem for Windows can be installed from the Microsoft Store
+
+Linux command syntactics: command + [option(s)] + [argument(s)]
+	-- means can't be combined together
+~ - means the user's home folder
+. - shourtcut to our current directory (only .), when we want to copy something into our current directory
+kissak@ABSNK465:~$ - means username@host_name:name_of_the_current_folder
+
+$ - read the value of the variable after it
+'' - take the string exactly literaly except * and ?, unlike "" where variables got replaced
+\$USER - \ is the escape character
+echo '\' - print \
+echo \'text\' - echoes 'text', used \ as escape characters
+
+daemon = system service listening inthe background
+swap is when process data is loaded between the memory and file system, it makes the process slow
+
+Login to Linux:
+	1. login shell: provide password and account
+	2. executes the /etc/profile
+	3. executes /etc/profile.d/*.sh, together with /etc/profile they hold all the systemwide environment and shell variable
+	4. executes ~/.bash_profile, which holds user environment and shell variables
+	5. executes ~/.bashrc
+	6. executes /etc/bashrc, which holds systemwide aliases and functions
+	7. returns control to ~/.bashrc to set user aliases and shell functions
+	8. user logged in
+
+Non-login shell: when you start a shell in a terminal in an existing session
+	1. executes ~/.bashrc
+	2. executes /etc/bashrc, which holds systemwide aliases and functions
+	3. returns control to ~/.bashrc to set user aliases and shell functions
+	4. shell runs
+
+WinSCP is for file transfer to and from your server, it is a file transfer application using Secure FTP.
+PuTTY is used to interact with the server directly, it is just a command line interface to your server.
+
+press TAB for auto completion
+press TAB twice for showing the possible options when it cannot decide
+
+User types:
+	- normal user: can only modify its own files, cannot make system changes
+	- super user (root): modify any file, make system changes
+
+.file_name - hidden file
+
+Common directories of a Linux filesystem
+	/ - Root. The root filesystem is the top-level directory of the filesystem. It must contain all of the files required to boot 
+		the Linux system before other filesystems are mounted. It must include all of the required executables and libraries required
+		to boot the remaining filesystems. After the system is booted, all other filesystems are mounted on standard, well-defined 
+		mount points as subdirectories of the root filesystem.
+	/bin - Common executable programs, shared by the system, the system administrator and the users.
+	/boot - Contains the static bootloader and kernel executable and configuration files required to boot a Linux computer.
+	/dev - This directory contains the device files for every hardware device attached to the system. These are not device drivers,
+		   rather they are files that represent each device on the computer and facilitate access to those devices.
+	/etc - Contains the local system configuration files for the host computer.
+	/home - Home directories of the common users. Each user has a subdirectory in /home.
+	/lib - Contains shared library files that are required to boot the system and includes files for all kinds of programs needed by the system and the users.
+	/lost+found - Every partition has a lost+found in its upper directory. Files that were saved during failures are here.
+	/media - A place to mount external removable media devices such as USB thumb drives that may be connected to the host. /media is where the system mounts removable media
+	/misc - For miscellaneous (mindenféle) purposes.
+	/mnt - Standard mount point for external file systems, e.g. a CD-ROM or a digital camera. /mnt is for you to mount things manually.
+	/net - Standard mount point for entire remote file systems
+	/opt - Typically contains extra and third party software.
+	/proc - A virtual file system containing information about system resources.
+	/root - The administrative user's home directory. Mind the difference between /, the root directory and /root, the home directory of the root user.
+	/sbin - Programs for use by the system and the system administrator.
+	/tmp - Temporary space for use by the system and many programs, cleaned upon reboot. Users may also store files here temporarily.
+	/usr - Shareable, read-only files, including executable binaries and libraries, man files, and other types of documentationfor all user-related programs.
+	/var - Storage for all variable files and temporary files created by users, such as log files, the mail queue, the print spooler area, space for
+		   temporary storage of files downloaded from the Internet, or to keep an image of a CD before burning it.
+
+
+TEXT NAVIGATION
+select text to copy it to the clipboard
+right click to paste the copied text
+ctrl + A jump to the beginning of the line
+ctrl + E jump to the end of the line
+ctrl + left arrow - move left one word
+ctrl + right arrow - move right one word
+ctrl + U - remove all character from cursor to start
+ctrl + K - remove all character from cursor to end
+ctrl + Y - paste copied text
+ctrl + r - search command history
+ctrl + C - cancel command
+
+
+NAVIGATION COMMANDS
+clear - clears window
+pwd - print working directory
+file <file_name> - determines contant's type in the file
+stat <file_name> - detailed information about the file (like creation date, last modification date, last access date, size, permissions)
+
+cd - go back to the home folder
+	~ - go to the user's home folder
+	<path> - change directory, if folder/file name contain spaces it needs to be escaped (\) or enclosed ("")
+	.. - go to parent directory
+	../.. - go 2 directories up
+	../../finance/spreadsheets - relativ path, go back 2 folders and from there go to finance and then to spreadsheets
+	- - go back to previous folder
+
+pushd /var/log - stores a directory path in the directory stack, in addition, make the directory being working on as your new working directory
+dirs - show dirs in the stack
+echo ~1 - print second item from the directory stack 
+cd ~1 - goto second item from the directory stack 
+cd ~0 - goto /etc/yum.repos.d/
+popd +1 - remove the 2nd item from the directory stack
+
+ls - list items in the current folder
+	/Documents -  list items in the specified folder
+	-l - show detailed information about the files in the specified folder
+	-R - list folders recursively
+	-x - list entries by lines instead of by columns
+	-lh - list items with human readable file sizes 
+	-a - do not ignore entries starting with .
+	-c - with -lt sort by time of last modification, and show ctime
+	   - with -l: show ctime and  sort  by  name
+       - otherwise: sort by ctime, newest first
+	-u - with -lt: sort by, and show, access time
+	   - with  -l:  show  access time  and  sort  by  name
+	   - otherwise: sort by access time, newest first
+	-r - reverse order while sorting
+	-S - sort by file size, largest first
+	-t - sort by modification time, newest first
+	-X - sort alphabetically by entry extension
+	--color=always - show listed items with colors
+	--sort=WORD - sort  by  WORD  instead  of name: none (-U), size (-S), time (-t), version (-v), extension (-X)
+	--hide=PATTERN - do not list entries matching PATTERN (overridden by -a or -A)
+ls file[[:digit:]].txt = ls file[0-9].txt
+ls file[[:digit:][:spaces:]].txt
+ls file[![:digit:]].txt = ls file[!0-9].txt
+ls file[![:digit:][:spaces:]].txt
+	- ls {*.jpg, *.gif} - list multiple matches
+	- * - matches any numbers of characters
+	- ? - matches 1 character
+	- [] - matches one character in the list, by using - we create a range, without it treated as a list
+	- [-0-9] - matches a hyphen
+	- [!0-9] - do not match character in the list
+	- [:digit:] - matches one character of a certain type
+	- [:upper:] - matches one character of a certain type
+	- [:lower:] - matches one character of a certain type
+	- [:alpha:] - matches one character of a certain type
+	- [:alnum:] - matches one character of a certain type
+	- [:space:] - matches one character of a certain type, spaces, tabs, newlines
+	- [:print:] - matches one character of a certain type, printable characters, including spaces
+	- [:punct:] - matches one character of a certain type
+	- [:graph:] - matches one character of a certain type, printable characters, not including spaces
+	- [:cntrl:] - matches one character of a certain type, nonprintable control characters
+	- [:xdigit:] - matches one character of a certain type, hexadecimal characters
+
+ls +(photo|Photo)*+(.jpg|.gif)
+	- ?(match) - 0 or 1 occuence of pattern, whole text needed (unlike in case of []), brace expansion
+	- +(match) - 1 occuence of pattern, whole text needed (unlike in case of [])
+	- +(match|match) - match one or the others
+	- *(match) - 0 or more occuence of pattern, whole text needed (unlike in case of [])
+	- !(match) - inverts the match
+	- !(+(match()*+(match)) - group matches
+
+WORKING WITH FILES/FOLDERS
+mkdir <path>/<folder_name> - make new folder in the specified folder
+mkdir <path>/<folder_name> path/<folder_name> path/<folder_name> - create multiple folders in the specified folders
+mkdir -p <folder_name>/<folder_name>/<folder_name> - create new folders and subfolders in one step
+mkdir -p $pdir - create the dir structure stored in the variable
+	-p - no error if existing, make parent directories as needed
+
+rmdir departments/legal/contracts/ - delete an empty folder
+
+lsof - list open files
+	-i - selects the listing of files any of whose Internet address matches the address specified in i, 
+		 if no address is specified, this option selects the listing of all Internet and x.25 (HP-UX) network files
+
+split -b 10k testfile.txt - split file into smaller files
+	-d - use numeric suffixes starting at 0, not alphabetic
+	-a - generate suffixes of length N (default 2)
+	-l NUMBER - put NUMBER of lines per output file
+
+comm file1 file2 - compare sorted files FILE1 and FILE2 line by line. With 
+				   no options, produce three-column output. Column one 
+				   contains lines unique to FILE1, column two contains 
+				   lines unique to FILE2, and column three contains lines 
+				   common to both files.
+	-1 - suppress (hide) column 1 (lines unique to FILE1) 
+	-2 - suppress column 2 (lines unique to FILE2) 
+	-3 - suppress column 3 (lines that appear in both files) 
+	--check-order - check that the input is correctly sorted, even if all input lines are pairable 
+	--nocheck-order - do not check that the input is correctly sorted 
+	--output-delimiter=STR - separate columns with STR
+	
+diff file1 file2 - analyzes two files and prints the lines that are different, it's telling you how to change the first file to 
+				   make it match the second file. The first line of the diff output will contain: line numbers corresponding to the first file,
+				   a letter (a for add, c for change, or d for delete), and line numbers corresponding to the second file.
+				   - lines preceded by a < are lines from the first file
+				   - lines preceded by > are lines from the second file
+				   - three dashes ("---") merely separate the lines of file 1 and file 2
+				  - "2,4c2,4" means: "Lines 2 through 4 in the first file need to be changed to match lines 2 through 4 in the second file.
+				    It then tells us what those lines are in each file. "2a3" After line 2 in the first file, a line needs to be added: line
+					3 from the second file." It then shows us what that line is. "4d3" You need to delete line 4 in the first file so that 
+					both files sync up at line 3. It then shows us the contents of the line that needs to be deleted.
+diff -u hello.c hello_new.c > hello.patch - create a patch file named "hello.patch"
+patch < hello.patch - apply a diff file to the original one, patch file contains the name of the file to be patched
+
+
+cut -f FIELD_NUMBER data.csv - print selected parts of lines from each FILE to standard output.
+	-f FIELD_NUMBER - select only these fields
+	--complement - complement the set of selected bytes, characters or fields
+	-d 'd'- use given delimiter instead of TAB for field delimiter when reading content
+	--output-delimiter=';' - use ; as the output delimiter string. The default is
+								to use the input delimiter.
+paste -d ';' data_1.csv data_2.csv - merges columns from 2 files
+	-d - use characters from LIST instead of tabs as delimiter
+
+cp poems.txt poems2.txt - copy a file
+cp simple_data.txt departments/hr/employee/info/ - copy file to the specified folder
+
+mv poems2.txt departments/marketing/ - move file to the specified folder
+mv departments/marketing/poems2.txt departments/marketing/literature.txt - rename file in the specified folder
+mv departments/marketing/literature.txt . - moves the specified file into the current folder (. means current folder)
+
+* - stands for any number of character
+? - stands for one character
+
+mv *.txt departments/marketing/ - move all .txt files to the specified folder
+mv departments/marketing/* . - move everything from the specified folder to the current folder
+
+rm literature.txt - delete file, no trash
+rm poems?.txt - delete files with the specified name
+rm -r departments/customerservice/ - delete everything in the specified folder
+
+find <path> -name "poe*" - search for a file with the specified name in the specified folder recursively
+find . -name "poe*" - search for a file with the specified name in the specified folder recursively
+find ~ -name "poe*" - search for a file with the specified name in the home folder recursively
+	-maxdepth <number> - levels of directories below the starting-points.  
+	-maxdepth 0 - do not search directories or subdirectories. Instead only look for a matching file among those explicitly listed on the command line
+	-mindepth <number> - Do  not  apply  any tests or actions at levels less than levels 
+	-mindepth 1 - means process all files except the starting-points
+	-atime - search based on last time of access
+	-ctime - search based on creation time
+	-mtime - modification time, -7 means in the last 7 days
+	-path - patch to search
+	-size - size to search
+	-delete - put it as the last option, it e will delete the found files, if used as first option it will delete everything
+	-newer - find files newer than the specified one
+	-type - search based on type
+		b - block (buffered) special
+		c - character (unbuffered) special
+		d - directory
+		p - named pipe (FIFO)
+		f - regular file
+		l - symbolic link
+		s - socket
+		D - door (Solaris)
+	-exec grep 'chrome?' {} \; - find will execute grep and will substitute {} with the filename(s) found,
+								 ; escaped here as \; to prevent the shell from interpreting it. Execute 
+								 command; true if 0 status is returned. All following arguments to find 
+								 are taken to be arguments to the command until an argument consisting of
+								 `;’ is encountered. The string `{}’ is replaced by the current file name
+								 being processed everywhere it occurs in the arguments to the command.
+
+Links: file that acts as a reference to another file (like shortcuts in Windows)
+	- hard link: points to data on the disk (lrwxrwxrwx 1 kissak kissak    8 Feb 28 17:40 hello_slink.sh -> hello.sh)
+	- soft link: points to a file on the disk, red if not working anymore (-rw-rw-rw- 2 kissak kissak   11 Feb 28 17:39 hello_hlink.sh)
+
+ln -s poems.txt writing.txt - creates soft link (shortcut) to the specified file, if file moves than not valid anymore
+ln poems.txt words.txt - creates hard link (shortcut) to the specified file, if file moves/gets deleted remains valid, because it points to the data on the disk
+
+touch newfile.txt - create a new empty file, default permission: -rw-rw-rw-
+touch $pdir/$fname - create a file with the specified name in the variable in the folder stored in the variable
+touch $pdir/${fname}_january - create a file with the specified name in the variable in the folder stored in the variable with the specified ending
+
+WORKING WITH TEXT FILES
+cat poems.txt - The cat (short for “concatenate“) command is one of the 
+				most frequently used command in Linux/Unix like operating
+				systems. cat command allows us to create single or multiple
+				files, view content of a file, concatenate files and redirect
+				output in terminal or files.
+cat poems.txt | cat -n | tail -n5 - print and add line numbering to the last 5 lines of the file
+cat poems.txt | tail -n5 | cat -n - different result, print the last 5 lines and then add line numbering to it
+cat > geekfile.txt - create file with the content below
+fdsf fdsfsd fdsfds
+dsf fsd
+sdf fds dsf 
+
+head -n5 poems.txt - shows the first 5 lines of the file
+tail -n5 poems.txt - shows the last 5 lines of the file
+
+tr [options] set1 set2 - translate
+	-d - delete characters
+	-c - use the complement of SET1
+	-s - replace each sequence of a repeated character that is listed in the last specified SET, with a single occurrence of that character
+cat asd.txt | tr "[a-z]" "[A-Z]" - convert everything to upper case
+cat asd.txt | tr '[:lower:]' '[:upper:]' - translate lower to upper
+cat asd.txt | tr [:space:] '\t' - translate all the white-space to tabs
+cat asd.txt | tr 'a3' 'b5' - translate all a to b and all 3 to 5
+cat asd.txt | tr -d 'a3' - delete all a and 3
+cat asd.txt | tr -d [:digit:] - remove all digits
+cat asd.txt | tr -cd [:digit:] - remove all non-digits
+
+
+md5sum file.txt > file_sum.md5 - generate checksum for file, can be calculated for directories as well
+md5sum -c file_sum.md5 - to check checksum after generation, file name is stored in the md5 file
+
+cat asd.txt | wc - count the of lines, words and characters 
+	-l - count the words
+	-c - print the byte counts
+	-m - print the character counts
+	-w - print the word counts
+
+grep -in "the" poems.txt - show which lines in the files contain "the", 
+	-i - means not case sensitive
+	-n - means show line numbers
+	-v - which lines does not contain the specified text
+	-E - regexp, show lines with hjik
+	-w - select only those lines containing matches that form whole words
+	-x - select only matches that exactly match the whole line
+	-c - instead of the normal output, print a count of matching lines for each input file
+	--colour[=WHEN] - WHEN is never, always, or auto
+	-L - instead of the normal output, print the name of each input file from which no output would normally have been printed, the scanning will stop on the first match
+	-l - nstead of the normal output, print the name of each input file from which output would normally have been printed, the scanning will stop on the first match
+	-H - print the file name for each match, this is the default when there is more than one file to search
+	-A - print NUM lines of trailing context after matching lines
+	-B - print NUM lines of leading context before matching lines
+	--exclude - skip files whose base name matches 
+	-r - read all files under each directory, recursively
+	
+awk - scans a file line by line, splits each input line into fields, compares input line/fields to pattern, then performs action(s) on matched lines
+awk '{print}' employee.txt - prints every line of data from the specified file
+awk '/manager/ {print}' employee.txt - print the lines which matches with the given pattern
+awk '{print $1,$4}' employee.txt - splitting a line into fields ($0 is the entire line)
+Awk’s built-in variables:
+	- field variables—$1, $2, $3, and so on ($0 is the entire line), that break a line of text into individual words or pieces called fields
+	- NR: NR command keeps a current count of the number of input records
+	- NF: NF command keeps a count of the number of fields within the current input record.
+	- FS: FS command contains the field separator character which is used to divide fields on the input line, the default is “white space”, meaning space and tab characters
+	- RS: RS command stores the current record separator character, since, by default, an input line is the input record, the default record separator character is a newline
+	- OFS: OFS command stores the output field separator, which separates the fields when Awk prints them, the default is a blank space
+	- ORS: ORS command stores the output record separator, which separates the output lines when Awk prints them, the default is a newline character
+awk '{print $2 "\t" $1}' simple_data.txt | sort -n - take 2nd and 1st column from the file and print it formatted and sorted
+awk 'NR==4,NR==6' - print text between lines
+wk 'NR==3, NR==6 {print NR,$0}' employee.txt - print text between lines with line numbers
+awk '{print NR,$0}' employee.txt - print all record and line numbers
+awk '{print $1,$NF}' employee.txt - display first and last field
+awk 'NF > 0' geeksforgeeks.txt - to print any non empty line if present
+awk '{ if (length($0) > max) max = length($0) } END { print max }' geeksforgeeks.txt
+awk 'END { print NR }' geeksforgeeks.txt - to count the lines in a file
+awk 'length($0) > 10' geeksforgeeks.txt - find/check for any string in any column
+awk 'BEGIN { for(i=1;i<=6;i++) print "square of", i, "is",i*i; }' - print the squares of first numbers from 1 to n say 6:
+
+sed - SED is a powerful text stream editor, can do insertion, deletion, search and replace (substitution)
+sed 's/unix/linux/' geekfile.txt - substitute the word “unix” with “linux” in the file
+sed 's/unix/linux/2' geekfile.txt - replacing the nth occurrence of a pattern in a line
+sed 's/unix/linux/g' geekfile.txt - replacing all the occurrence of the pattern in a line
+sed 's/unix/linux/3g' geekfile.txt - replacing from nth occurrence to all occurrences in a line
+echo "Welcome To The Geek Stuff" | sed 's/\(\b[A-Z]\)/\(\1\)/g' - parenthesize first character of each word
+sed '3 s/unix/linux/' geekfile.txt - replacing string on a specific line number
+sed -n 's/unix/linux/p' geekfile.txt - suppresses the duplicate rows generated by the /p flag and prints the replaced lines only one time
+sed '1,3 s/unix/linux/' geekfile.txt - replacing string on a range of lines
+sed '2,$ s/unix/linux/' geekfile.txt - replaces the text from second line to last line in the file
+sed '5d' filename.txt - delete a particular line
+sed '3,6d' filename.txt - delete line from range x to y
+sed '12,$d' filename.txt - delete from nth to last line
+sed '$d' filename.txt - delete last line
+
+sort simple_data.txt - sort the data
+	-r - sorting in reverse order
+	-n - sort numerically the content
+	-k2 - sort based on the 2nd column
+	-c - check if the file given is already sorted or not
+	-u - sort the content and ignore duplicates
+	-M - to sort by month pass
+
+rev "asd" - print text in reverse sequence
+tac simple_data.txt - concatenate and print lines in reverse
+
+
+PRIVILEGES
+sudo <command> -  run the command with super user privileges
+	sudo is meant to run a single command with root privileges, but unlike 
+	su it prompts you for the password of the current user. This user must
+	be in the sudoers file (or a group that is in the sudoers file). By 
+	default, Ubuntu "remembers" your password for 15 minutes, so that you 
+	don't have to type your password every time.
+		- enter user's password
+		- elevates privileges for one command
+		- all command execution is logged
+		- granular permission system, only allows certain people certain privileges
+sudo -s - switch over to the super user (root@ABSNK465:~/#)
+sudo -k - give up sudo privileges
+sudo su - Switch to root. It is still a very useful command for one important
+		  reason: When a user is running “su” to gain root access on a system,
+		  they must know the root password. The way root is given with sudo su
+		  is by requesting the current user’s password. This makes it possible
+		  to gain root without the root password which increases security.
+su - switch user
+	The command su is used to switch to another user (Switch User), 
+	but you can also switch to the root user by invoking the command
+	with no parameter. su asks you for the password of the user to 
+	switch, after typing the password you switched to the user's 
+	environment.
+		- enter root's password
+		- elevates privileges for whole session
+		- no accountability, all users who switch are root
+		- all-powerfull for anyone who has the password
+exit - switch back from super user
+
+File permission:
+	- first character: The first mode field is the "special file" designator, 
+					   regular files display as - (none). As for which possible
+					   letters could be there, on Linux the following exist:
+						- d (directory)
+						- c (character device)
+						- l (symlink)
+						- p (named pipe)
+						- s (socket)
+						- b (block device)
+	- first upcoming block of 3 characters: owner of the file (User (u))
+	- second upcoming block of 3 characters: group that owns the file Group (g))
+	- third upcoming block of 3 characters: others, not in the group (Others (o))
+	- (All (a))
+
+File permission types
+	r - read (4)
+	w - modify (2)
+	x - execute (1)
+	
+Octal value:
+	0 - ...
+	1 - ..x
+	2 - .w.
+	3 - .wx
+	4 - r..
+	5 - r.x
+	6 - rw.
+	7 - rwx
+
+Symbolic file permissions:
+	+ - adds permission
+	- - removes permission
+	= - adds listed permissions but removes all the others not listed
+
+chmod 700 sum.md5 - change permission, all for owner, nothing for the group and others
+chmod g+rw sum.md5 - change permission for group, give read and write access to the group of the owner
+chmod g-w sum.md5 - change permission for group, revoke write access from the group
+chmod u=r sum.md5 - change permission for user, assign read permision, but remove all others if exists 
+
+sudo chown root test.sh - change owner of the file
+
+
+OTHER COMMANDS
+man access.conf - specifies (user/group, host), (user/group, network/netmask) or (user/group, tty) combinations for which a login will be either accepted or refused
+apropos "unknown command" - searches in the list of commands and descriptions for an unknown command
+man <command> - open manual pages with LESS
+	f - forward one window
+	b - backward one window
+	h - get help, shows summary of LESS commands
+	q - quit
+<command> --help - open manual pages with LESS
+| - pipe, takes the output of one command and sends it to another
+which ls - shows which program would be executed when I type ls
+whoami - current user (changes with su, but environment variables remain the original one)
+logname - current user
+sudo visudo - config file for who and what can do with sudo
+
+echo "hello" - prints out the text/variable after it
+echo s{pe,pi}ll - echo both spell and spill
+echo ~root - show root's/user's home dir
+
+mkfifo named_pipe - creates a named pipe, named pipe (also known as a FIFO) is one of the methods for intern-process communication
+echo "hi" > named pipe - write pipe
+cat named_pipe - read pipe, from another terminal
+rm named_pipe - delete named piped
+
+history - show recent commands typed in
+!! - rerun the latest command
+!-4 - rerun the fourth line from the bottom
+!/7 - run number 7 from the list
+!ls - run the most recent line starting with ls
+CTRL + R - reverse search in history
+export HISTCONTROL=ignorespace - will not record command in the history starting with space
+export HISTCONTROL=ignoredups - dont record duplicate entries, but doesn't get rid of previous ones
+export HISTCONTROL=erasedups - remove previous duplicate entries from history
+export HISTCONTROL="erasedups:ignorespace" -  remove previous duplicate entries from history and will not record command in the history starting with space
+export HISTIGNORE="history*:ls*" - will not record commands starting with history or ls
+export HISTTIMEFORMAT="%h %d %H:%M:%S>" - add datetime to the history
+man strftime - available time formats
+export HISTSIZE=2000 - increase/decrease history elements number, negative numbers means unlimited, 0 means turn off
+	- when we exit from the shell the content of it is saved to a file  (.bash/history)
+expire HISTFILESIZE=10000 - number of records stored from history when we exit from shell to make persistant, not only available in the current login session
+vi ~/.bash_profile
+	HISTCONTROL="erasedups" - it will be executed after every login
+
+shopt - list various Bash shell options
+shopt -s extglob - turn on extglob Bash shell option, to make it persistent, you have to put it into the bashrc file
+shopt -u extglob - turn off extglob Bash shell option
+
+
+SUMMARY OF LESS COMMANDS
+LESS is a terminal pager program on Unix, Windows, and Unix-like systems used to 
+view (but not change) the contents of a text file one screen at a time. It has 
+faster access because if file is large, it don’t access complete file, but access
+it page by page.
+
+less filename - show the first page of the file
+
+h - display help
+q - exit
+v – using the configured editor edit the current file
+f - forward one window
+b - backward one window
+G - jump to the end
+g - jump to the beginning
+:n – go to the next file, when you opened more than two files
+:p – go to the previous file, when you opened more than two files
+/pattern - search forward for (n-th) matching line
+?pattern - search backward for (n-th) matching line
+&pattern - display only matching lines
+^ - search for characters in the beginning of the lines, search pattern may be preceded by it
+! - search for non-matching lines, search pattern may be preceded by it 
+
+SUMMARY OF NANO COMMANDS
+nano test.sh - edit file with NANO text editor
+nano - opens nano text editor (bit more user friendly)
+	- ctrl + g - display help text
+	- ctrl + x - exit from nano
+	- ctrl + o - save
+	- ctrl + w - search in the text, for next occurence hit ctrl w again and enter again\
+	- ctrl + c - cancel operation
+	- ctrl + W - Search forward for a string or a regular expression
+	- ctrl + K - Cut the current line and store it in the cutbuffer
+	- ctrl + U - paste from the cutbuffer into the current line
+	- ctrl + _ - go to line and column number
+	- alt + U - Undo the last operation
+	- alt + E - Redo the last undone operation
+	- alt + 6 - Copy the current line and store it in the cutbuffer
+	- alt + W - Repeat the last search
+	- ctrl + Y - Go one screenful up
+	- ctrl + V - Go one screenful down
+	- alt + D - Count the number of words, lines, and characters
+	- ctrl + Q - Search backward for a string or a regular expression
+	- ctrl + S - Save file without prompting
+	- alt + Y - Color syntax highlighting enable/disable
+
+SUMMARY OF VIM COMMANDS
+vim - Opens VIM. Vim ("vi improved") is one of these editors. "vi" is
+	  a text editor from the early days of Unix. As the name suggest it
+	  adds lots of functions to the original vi interface. 
+
+	-M - modifications  not  allowed.
+	
+VIM controls	
+	- h - display help
+	- q - exit
+	- f - forward one window
+	- b - backward one window
+	- /pattern - search forward for (n-th) matching line, press n for next and N for previous
+	- ?pattern - search backward for (n-th) matching line, press n for next and N for previous
+	- &pattern - display only matching lines, press n for next and N for previous
+	- ^ - search for characters in the beginning of the lines, search pattern may be preceded by it
+	- ! - search for non-matching lines, search pattern may be preceded by it 
+	- :new - new file
+	- :w - save
+	- i - enter insert mode
+	- esc - exit current mode, enter command mode
+	- o - enter insert mode and open a new line
+	- :w new.txt - save file
+	- :wq - save and quit
+	- g - go to the beginning of the file
+	- shift + G - go to the end of the file
+	- () - move back/forth on sentences
+	- {} - move back and forth on paragraphs
+	- q! - quit without saving
+
+
+REDIRECTING I/O
+ls 1>filelist.txt - redirecting stdout to a file, print to a file instead of a screen
+ls notreal 2>filelist4.txt - redirect error message, put into error file instead of the screen
+>file4.txt - truncates the file
+echo "my text" >>filelist5.txt - append to the end of the file
+	- > - redirect stdout to a file and overwrite
+	- >> - redirect stdout to a file and append
+	- 2> - redirect stderror to a file and overwrite
+	- 2>> - redirect stderr to a file and append
+	- &> - redirect both to a file and overwrite
+	- &>> - redirect both to a file and append
+ls | tee lsout.txt - tee command sends output to a file and to the screen
+ls | tee -a lsout.txt - tee command sends output to a file (appending the content) and to the screen
+sort < /home/lsout.txt > /home/sorted.txt - redirect in and out of a command
+find /etc 2> etcerr.txt | sort | tee etcsort.txt | wc -l  - list files, redirect std error to the file, sort them, word count
+find /etc &> /dev/null - hide all output by redirectig to there
+
+
+PACKAGE, ARCHIVE AND COMPRESS FILES AND FOLDERS
+tar: tape archives, common way to package and distribute software, data compression is optional (tar.gz, .tgz)
+tar -cvf myfiles.tar asd/ - create an archive file called myfiles.tar from the asd/ folder
+	-cf - create an archive and output the a file to an archive
+	-v - list out all the files while doing the work
+	-z - gzip compression on the tar archive
+tar -caf myfiles.tar.gz asd/ - 
+	-a - tells to find out what compression to use based on the file extension
+tar -xf myfiles.tar.bz2 -C unpack2/- unpack/uncompress the specified file
+	-x - unpack the specified file
+	-C - unpack to the specified folder
+	-a - tells to find out what decompression to use based on the file extension
+
+gzip filename.txt - can only archive files, the common practice with GZIP, is to archive all the files into a single tarball before compression
+	-l filename.txt.gzip - list compressed file contents
+	-5 - It allows to change the compression level.A file can be compressed in different ways. For instance, you can go for a smaller
+		 compression which will work faster or you can go for maximum compression which has the tradeoff of taking longer to run.
+		 The speed and compression level can vary by levels using numbers between 1 and 9.
+	-k - by default when you compress a file using the “gzip” command you end up with a new file with the extension “.gz”, if you 
+		 want to compress the file and keep the original file you have to run the gzip command with -k option
+	-v - displays the name and percentage reduction for each file compressed or decompressed
+	-r folder/- This option can compress every file in a folder and its subfolders.This option doesn’t create one file called 
+		 foldername.gz. Instead, it traverses the directory structure and compresses each file in that folder structure.
+	-d filename.txt.gzip - decompress
+	
+tar czvvf archive.tar.gz asd/ - create tar package and then compress the file with gzip ftom the files in the specified folder
+tar xavvf archive.tar.gz -C extract_dir - extract double extracted file into the specified folder
+
+zip file.zip file.txt - zip a file
+zip -r exfiles.zip asd/ - create a zip file from the specified folder in the specified folder, shows how much a file reduced
+	-r - create a zip file recursively
+zip -u files.zip "asd/file3.txt"
+	-u - can be used to update the specified list of files or add new files to the existing zip file
+zip -d files.zip "asd/file3.txt" - removes the file from the zip archive
+	-d - removes the file from the zip archive
+unzip exfiles.zip - unzip a file
+	-d folder_name - unzip to the specfied folder
+
+pbzip2 myfile.tar - compress the file "myfile.tar" into the compressed file "myfile.tar.bz2", uses multiple cores to compress files, so it is faster
+	-d myfile.tar.bz2- decompress file
+	-p# - where # is the number of processors
+
+ftp ftp.wscbau.hu - create ftp connection to a server
+rsync foo/ - If only the source path is specified, the contents of the source are listed in an output format similar to ls -l
+rsync -avh foo/ bar/ - If neither the source or destination path specifies a remote host, the rsync commands behave as a copy command
+rsync -avhze ssh /asd ftp.wscbau.hu:/tmp - 
+rsync -a ~/dir1 username@remote_host:destination_directory - Once you have SSH ACCESS verified on between the two machines, you can sync the dir1 
+															 folder from earlier to a remote computer by using this syntax (note that we want to
+															 transfer the actual directory in this case, so we omit the trailing slash). This is 
+															 called a “push” operation because it pushes a directory from the local system to a remote system.
+rsync -a username@remote_host:/home/username/dir1 ~/dir2 - Once you have SSH ACCESS, it is used to sync a remote directory to the local system.										 
+	-a - archive mode, archive mode allows copying files recursively and it also preserves symbolic links, file permissions, user & group ownerships and timestamps
+	-v - verbose
+	-z - compress file data
+
+
+SYSTEM CONFIGURATION
+
+1. local environment variable: last only till the current session
+2. user environment variable: efined for a particular user and are loaded every time a user logs in,
+   set in and loaded from following configuration files: .bashrc, .bash_profile, .bash_login, .profile
+   files which are present in user’s home directory
+3. system wide environment variables: available system-wide, i.e. for all the users present on that system.
+   these variables are present in system-wide configuration files. these variables are loaded every time system
+   is powered on and logged in either locally or remotely by any user.
+   
+Understanding User-Wide and System-wide Configuration files
+.bashrc: This file is user specific file that gets loaded each time user creates a new local session i.e. in 
+		 simple words, opens a new terminal. All environment variables created in this file would take effect
+		 every time a new local session is started.
+.bash_profile: This file is user specific remote login file. Environment variables listed in this file are invoked
+			   every time the user is logged in remotely i.e. using ssh session. If this file is not present, system
+			   looks for either .bash_login or .profile files.
+/etc/environment: This file is system wide file for creating, editing or removing any environment variables. Environment
+				  variables created in this file are accessible all throughout the system, by each and every user, both
+				  locally and remotely.
+/etc/bash.bashrc: System wide bashrc file. This file is loaded once for every user, each time that user opens a local
+				  terminal session. Environment variables created in this file are accessible for all users but only
+				  through local terminal session. When any user on that machine is accessed remotely via a remote login 
+				  session, these variables would not be visible.
+/etc/profile: System wide profile file. All the variables created in this file are accessible by every user on the system,
+			  but only if that user’s session is invoked remotely, i.e. via remote login. Any variable in this file will
+			  not be accessible for local login session i.e. when user opens a new terminal on his local system.
+
+env - show environment variables
+	PATH - paths where the shell should look for files outside of the courrent folder (ls command is not in our home folder)
+nano ~/.profile - edit .profile file
+	- PATH = "$PATH:/path/to/mytools" - add something to the path after ":" sign
+
+cat etc/shells - list all available shells on your Linux system
+chsh --shell /bin/bash kissak - change default shell dash, need to log out and log back to incorporate the change
+printenv - print all env variable
+printenv SHELL - print the value of SHELL environament variable
+echo $SHELL - print the value of SHELL environment variable
+
+VAR=TEST - local environment variables can be created using this command, session wide and are valid only for current terminal session, will not be listed by printenv
+EXPORT VAR=TEST - local environment variables can be created using this command, session wide and are valid only for current terminal session, will not be listed by printenv
+unset VAR1 - remove that local variable
+
+cat /etc/*release - check system version
+uname -a - kind of kernel used
+free -h - how much resource we have
+cat /proc/cpuinfo - cpu information
+df -h - storage spaces used
+sudo du / -hd1 - how much space used by others
+ip a - network information
+
+df - disk free
+du - disk used, estimate file space usage
+	-a - write counts for all files, not just directories
+	-h - print sizes in human readable format
+	-c - produce a grand total
+	-s - display only a total for each argument
+du -hs /home/kissak/ - show the total disk space used by someone
+
+yum is the package manager for Red Hat, Fedora and related distros; apt-get (now mostly replaced by apt) is the package 
+manager for Debian, Ubuntu and others in that family. They have somewhat different functionalities but serve the same 
+purpose: intelligent updates and upgrades to system applications.
+
+apt search "keyword" - search for apps to install with the keyword in its name or description
+sudo apt update - update package infos
+sudo apt upgrade - upgrade installed apps
+sudo apt install tree - install app named tree
+man tree - check app manuals for app named tree
+
+sudo yum install shadow-utils - install shadow-utils app
+
+
+HANDLING USERS AND GROUPS
+less /etc/passwd - one line per user account
+1. column: user name
+2. password encoding type
+3. numeric user id (0-999 system ccounts, 1000+ user accounts
+4. primary group id number (etc/group)
+5. comment
+6. home directory
+7. default shell
+
+sudo pwunconv - move encoded passwords from shadow file to the etc/passwd file
+sudo gpasswd testgroup - change password for group
+sudo grpunconv - move encoded group passwords from shadow file to the etc/passwd file
+cat /etc/login.defs - config file for users
+sudo chage -d 0 username - force user to enter a new password on next login
+echo 'password' | pwscore - check password strength
+
+sudo passwd --expire username - force user to change password on next login
+
+sudo useradd bob - create new user with default values taken from etc/default/useradd
+sudo passwd bob - change password for bob
+sudo userdel -r bob - delete user bob and his user directory
+sudo mkhomedir_helper bob - create home diretory for new user
+
+sudo usermod -a -G testgroup bob - add bob to the group audio
+sudo usermod -L bob - lock account, can still login with valid ssh keys
+sudo usermod -U bob - unlock account
+sudo usermod -s /bin/bash bob - change default shell to no login
+man usermod - manual for usermod
+sudo chage -E 0 bob - fully lock the account brian (cannot login with ssh)
+sudo chage -E -1 bob - unlock account for brian
+
+sudo groupadd -g 1050 testgroup - create new group, groups cannot be nested
+sudo groupmod -g 1051 testgroup - change group id for testgroup
+sudo gpasswd -a bob testgroup - add user to group
+sudo usermod -a -G testgroup bob - modify users primary group
+sudo groupdel testgroup - delete group
+newgrp testgroup - change my group
+id - account details
+sudo gpasswd -A bob testgroup - add user bob as admin to the testgroup
+
+cat /etc/shells - installed shells
+sudo less /etc/shadow - only readable by root
+1. username
+2. password hash
+3. number od days between 1970 jan 1 and the date of the most recent password change
+4. number of days before the password can be changed
+5. number of days before the password must be changed
+6. number of days to warn before password expires
+7. number of days after the password expires the account is disabled
+8. number of days between 1970 jan 1 and the date the account was disabled
+9. reserved for future use
+
+less /etc/group - lists group
+1. group name
+2. password encoding type or placeholder for password in etc/gshadow
+3. group id <1000 system, >1000 user group
+4. group members
+
+
+EXECUTING JOBS
+bash sleep-then-echo.sh & - execute the bash job in the background, id of the job is in []
+fg %1 - brings job with id = 1 to the foreground
+ctrl + Z - suspend the job
+bg %1 - sends job with id = 1 to the background
+
+scp bigfile ssscott@10.3.25.103:/home/scott & - copy file named bigfile to the specified machine's specified folder using the specified user in the background
+jobs - show running jobs, 1 (job id) and 528 (process id) are two different identifiers
+kill 529 - terminate a job with process id = 529
+kill -STOP 529 - stop a job with process id = 529
+kill -CONT 529 - continue a job with process id = 529, %1 (job id) and 528 (process id) are two different identifiers
+disown %5 - remove job from  job list, if you want it to run, but don't want to manage anymore
+ps -x | grep bash - shows running jobs, also disowned ones
+
+
+BASH SCRIPTS (.SH)
+bash hello.sh - execute bash commands in the file
+source config.sh - reads and executes commands from the file specified as its argument in the current shell environment. It is useful to load functions, variables and configuration files into shell scripts
+chmod 755 hello.sh - gives everyone acces to execute the script, now can run the file without the bash command
+./hello.sh - execute it, ./ needed because Linux looks for executables in the path, ./ means do not use the path, but use the given folder
+# - comment in a bash file
+#!/usr/bin/env bash - shebang in the first line of the file, the script will only run in bash
+#!/usr/bin/env python - shebang in the first line of the file, the script will only run in python
+#!/usr/bin/env node - shebang in the first line of the file, the script will only run in java
+
+FIRST_NAME=Bob - declare a variable in the sh file, no spaces are allowed
+$FIRST_NAME - reference that variable in the sh file
+NAME='Bob Roberts" - create variables with spaces in them
+
+$0 - special parameter, the name of the script, path included
+$1 - fist parameter
+./params.sh Joe - Joe will be the first parameter, can be refenrenced with $1, better to assign the parameter to a variable in the beginning of the sh file
+
+echo $(date} - display the current date
+echo ${pwd} - diplay the current directory, where the script executed
+exit 100 - exit with code 100, always exit with 0 if everything went fine
+echo $? - shows the last exit code the system received, next time returns 0 because the lastest script is echo
+
+service --status-all - check if syslog is up and running
+logger this is log line - enter messages into the system log
+	-f - log the contents of the specified file
+	-s - output the message to standard error as well as to the system log
+tail -n 1 /var/log/messages - read log message
+tail -n 1 /var/log/syslog - read log message
+
+if [ $COLOR = "blue" ] then echo "blue" fi - if feltétel
+if [ $USER_GUESS -lt $COMPUTER ] then echo "less than" fi - if less then 
+	-le - less then or equal
+	-ge - greater or equal
+	-eq - equal
+	-ne - not equal
+	-lt - less then
+	-gt - greater than
+if [ condtion ] then statement else statement fi - if else statement
+if [ condtion ] then statement elif [ condtion ] else statement fi - if elif else statement
+while [ $COUNT -lt $10 ] DO statement ((COUNT++)) DONE - while loop
+
+set -x - start debugging in the script
+set +x - stop debugging in the script
+
+echo $# - print the number of parameters
+echo $* - handle all the parameters as one string
+echo ${#variable) - print the length of variable
+
+NAMES=$@ - put all the parameters in one array
+for NAME in $NAMES do statement done - for loop
+
+if [ $COLOR = "blue" ] then break fi - break statement
+if [ $COLOR = "blue" ] then continue fi - continue statement
+
+echo "the PATH: $PATH" - print environment variable
+	- HOME - user's home directory
+	- PATH -  directories which are searched for commands
+	- HOSTNAME - host_name of the machine
+	- SHELL - shell that is being used
+	- USER - user of the session
+	- TERM - type of command line terminal being used
+PATH="/bob" - change env variable within the script, changes back after the script quits
+if [ -z $EDITOR ] then statement fi - checks if the string is not empty
+
+
+function hello(){ local LNAME=$1 echo "$LNAME" } - define function with local variable using parameter
+local LNAME - create local variable local variable
+hello Bob - call the function with parameters
+FILES='ls -l | sort -r | head -3' - store the command in a variable
+
+
+WHILE read LINE do commands done < $file_name - read lines from a file 
+./reader.sh names.txt > output.txt - write the output of a program into a file
+./reader.sh names.txt >> output.txt - append the output of a program into a file
+
+
+read -p "What is your first name: " NAME - ask for user input and store in NAME variable
+read -p "What is your first name and age: " NAME AGE - ask for user input and store them in NAME and AGE variable
+
+
+PROCESS MONITORING
+ps - list all processes
+	-eH - list all running processes hierchically
+	-ef - list all process with arguments, start time, parent process
+	-eF -  list all process with arguments, start time, parent process, allocatd resources and other  17 column of info
+	--format uid,pid,ppid,%cpu,cmd - show processes with the listed columns
+	--sort %cpu - order process according to cpu usage
+	-U root - list all processes for user root
+	-C firefox - shows cpu usage for firefox
+top - start tool for monitoring processes
+
+w - show who is logged on and what they are doing.
+uptime - tell how long the system has been running
+last - show a listing of last logged in users
+
+hostname - show or set the system's host name
+uname - print system information
+	-n - print the network node hostname
+	-a - print all information
+	-r - print the kernel release
+
+time ls - measure execution time if the given command
+	-o - put it into a file
+	-a - append to the file
+	-f - use format as the format string that controls the output of time
+
+pidof crond - get the process id of crond
+pgrep crond - get the process id of crond 
+kill -l - list different signals (default SIGTERM)
+kill 4631 - kill process 4631
+sudo killal crond - kill all crond process
+sudo systemctl start crond - start crond
+
+watch ps -C dd --format pid,cmd,%cpu - run the ps command with the given parameters every 2 seconds
+	- on the other teminal execute dd if=/dev/zero of=/dev/null, dd copies a file, converts and formats according to the operands
+
+jobs - shows jobs
+	-l - lists process IDs in addition to the normal information
+    -n - lists only processes that have changed status since the last notification
+    -p - lists process IDs only
+    -r - restrict output to running jobs
+    -s - restrict output to stopped jobs
+
+sudo apt-get install at - install at
+sudo systemctl start at - start at job
+sudo systemctl enable atd - enable atd job
+at now +5min - runs command at a certain time, type to the prompt what to execute
+
+systemctl - control the systemd system and service
+systemctl list_unit_files - list all service files
+systemctl list-units -at service - list enabled running and not running services
+systemctl list-units -t service - list enabled running services
+sudo systemctl stop atd - stop service
+sudo systemctl start atd - start service
+sudo systemctl restart atd - restart service
+systemctl is-active atd - service is active or not?
+
+at -c 1 - shows the contents of the job with the specified id
+atrm 1 - delete scheduled job with the specified id
+atq - shows queued jobs
+batch - read commands from standard input or a specified file and execute them when system load levels permit i.e. when the 
+		load average drops below 1.5. It is important to note that batch does not accepts any parameters. 
+
+
+CRONTABS
+user cron jobs stored on cron tabs, stored in /var/spool/cron/<user>
+system cron jobs are tored in /etc/cron.d
+
+example: 0 1 * * * grant rsync -a ~/DOcuments/ ~Documents.bak
+			1. col: minute, when the job runs 
+			2. col: hour
+			3. col: day, * means every day
+			4. col: month
+			5. col: day of week
+			6. col: command to run (crontab-generator.org helps you generate it)
+	
+	* - every instance
+	, - lists
+
+sudo service cron start - start cron service
+sudo service cron stop - stop cron service
+sudo service cron restart - restart cron service
+crontab -l - list current user's crontabs
+crontab -e - edit crontab file
+	- * * * * * /home/kissak/sleep.sh - cron job definition, the shell script must be executable for cron
+crontab -r - remove crontable for user
+man crontab - show crontab manuals
+
+ls -d /etc/cron.* - use these files to create cronjobs executed hourly, so no need to create your own file
+
+/etc/at.all - determine who can submit jobs via at or batch
+/etc/cron.allow - who can create cron jobs, if exists and empty nobody can create
+/etc/at.deny - determine who cannot submit jobs via at or batch
+/etc/cron.deny - who cannot create cron jobs
+
+
+PARTITIONS AND FILESYSTEMS
+File systems provide the required infrastructure for holding data permanently operating system level. 
+Linux supports diverse types of file systems.
+
+cat /proc/partitions - file contains a table with major and minor number of partitioned devices, their number of blocks and the device name in /dev
+mkfs -t ext4 /dev/sda10 - create major file systems on partition
+mkdir /tmp/part10-dir - create a directory in tmp
+mount /dev/sda10 /tmp/part10-dir - mount the created filesystem to the created directory
+echo hello there > file - create a file in the new directory on the new filesystem
+umount part10-dir - unmount the filesystem from the directory
+ls -al - will show nothing
+
+
+udeadm info -a -p /sys/block/sda  - disk information
+cat etc/fstab - list of filesystems that will be mounted on boot
+
+fdisk -l |grep Disk - list of current disks
+fdisk /dev/sdc - dev means device, sd means storage device, c is the numbering of the disk, sdc1 would be the partitions's name
+	- press d for delete partitions
+	- press n for new partitions
+mkfs -t xfs /dev/sdc3 - create major file systems on partitions
+mount /dev/sdc3 /tmp/diskc3 - mount partition
+pvcreate /dev/sda5 - create physical volume
+vgcreate -c n vg2 /dev/sda5 /dev/sda - create volume group
+pvscan - phisycal volume scan
+lvcreare -L 700G -n lvm1 cg1 - create logical volume
+mkfs -t ext4 /dev/vg2/lvm3 - add filesystem for logical group
+mount /dev/cg2/lvm3 /tmp/lvm3 - mount logical group
+vgdisplay- show volume groups
+
+partitions -> physical volume -> volume group -> logical volume -> filesystem -> mount -> unmount
+
+cryptsetup -y -v loksFormat /dev/sdb1 - encrypt partition
+setfacl -m guest:r /etc/shadow - set access control list, oversede chmod options
+getfacl /home/guest/myfile - get acces control list for a file
+
+quota -cug /home - check quota for user
+edquota guest - change quote limits for user
+quotaon /tmp/c1 - turn on quotas
+
+mdadm --create --verbose /dev/md/testraid --level=5 --raid-devices=3 /dev/sdd{5,6,7} - create RAID devices for mirroring
+
+
+NETWORKING
+ip addr - inet and inet6 show the ip address, state UP/DOWN shows if the device can communicate using the interface
+ip -4 addr - show ip 4 address
+sudo ip link set enp0s3 down/up - switch off/turn on network
+sudo systemctl status NetworkManager - check if network manager is up and running
+sudo systemctl start NetworkManager - start network manager
+sudo yum install NetworkManager - install network manager
+nmcli device - find out network information
+cd /etc/sysconfig/network-scripts - network related scripts are stored here
+sudo vi ifcfg-enp0s3 - modify config file
+sudo systemctl restart NetworkManager - restart network manager
+nmcli device - find out network information
+nm-connection-editor - open connection manager
+nmcli - shows option
+	- device is a hardware, a connection is a collection of settings
+nmcli connection show enp0s3 - information for connections
+nmcli con edit enp0s3 
+	- print connection
+	- describe connection
+	- set connection.id my_ethernet
+	- set connection.autoconnect
+	- save
+	- quit
+nmcli c - show connections
+nmcli con up/down my_ethernet - turn on/off connection
+nmcli con edit my_ethernet - edit connection details
+nmcli  add con-name Othernet ifname anp0s3 type ethernet - add new connection
+ping google.com - ping a site
+ip a - shows ipp address (wl means wifi)
+nmcli d - available devices
+nmcli d wifi lists - show wifi lists
+nmcli add con-name wifi ifname  wlp0s6u1 type wifi ssid 'wifi' - set up wifi connection
+nmcli cin mod wifi wifi-sec.key-mgmt wpa-psk wifi-sec.psk 'secretkey' - set password for wifi
+sudo ifup anp0s3 - turn device up
+sudo ifdown anp0s3 - turn device down
+cd /etc/network/interfaces - network config files
+reboot - restart machine
+sudo iptables - extremely flexible firewall utility built for Linux operating systems
+nc -l 4545 hello - start port
+nc 10.0.2.29 5454 - connect to port on other machine
+sudo iptables -A INPUT -p TCP --dport 4545 -j Reject - add new protokoll
+sudo iptables -A INPUT -p TCP --dport 4545 -j accept - add new protokoll
+sudo firewall-cmd --zone=public --add-port=5454/tcp --ethernet - add new port
+sudo firewall-cmd --reload - reload firewall
+ss -t - show sockets
+ss -tln - show established sockets
+
+USING THE SHELL
+printf - inserts arguments into a user-defined string of text, creating formatted output
+let result=v1+v2 - summerize 2 variable
+bc - command line basic calculator
+array_var=(1 2 3 4 5) - declare array, over Bash 4
+array_var[5]="test5" - give value to an array
+array_var[@]="test5@" - add new item to the array
+echo 'alias cmd="command seq"' >> ~/.bashrc - save alias for later usage
+
+tput setb 6 - set terminal beckground color
+tput setf 6 - set terminal beforeground color
+tput bold - set terminal characters bold
+
+bash -x shell.sh- Print commands and their arguments as they are executed.
+set -o allexport - unset values of shell options and positional parameters.
+set +o allexport - set values of shell options and positional parameters.
+
+for i in{a..z}; do actions; done; - do something in a loop
+[[ $strng1 = $string2 ]] - string comparioson often needs 2 square brackets
+&& - logical and operator
+
+cat file1 file2 - concatenates data from the files, can be used with the pipe
+
+script -t 2>timing.log -a output.session - record bash scripts
+exit - exit recording
+script replay timing.log output.session - replay bash scripts
+
+
+WORKING WITH WEBPAGES
+wget URL - download webpage as html
+	-0 - write documents to FILE
+	-o - log messages to FILE
+	-t - set number of retries to NUMBER (0 unlimits)
+	--limit-rate=5 - limit download rate to RATE
+	-Q - set retrieval quota to NUMBER
+	-C - resume getting a partially-downloaded file
+	-N - don't re-retrieve files unless newer than given date
+	--user - set both ftp and http user to USER
+	--password - set both ftp and http password to PASS
+	
+lynx -dump google.com > plain.txt - download a page as plain text
+
+curl -o hello.zip ftp://speedtest.tele2.net/1MB.zip - download data from server
+curl URL - a tool to transfer data from or to a server, using one of the supported protocols
+	--silent - fail silently (no output at all) on server errors
+	-o - Write output to <file> instead of stdout
+	--progress-bar - make curl display transfer progress as a simple progress bar instead of the standard
+	-C - continue/resume a previous file transfer at the given offset
+	--cookie - pass the data to the HTTP server in the Cookie header
+	--user-agent - specify the user name and password to use for server authentication
+	-H - extra header to include in the request when sending HTTP to a server
+	--limit-rate - Specify the maximum transfer rate you want curl to use for both downloads and uploads
+	--max-filesize - Specify the maximum size (in bytes) of a file to download
+	-u - Specify the user name and password to use for server authentication 
+	-T - upload a file to the FTP server
+
+ping address - diagnostic tool for connectivity, address can be hostname or ipadress
+	-c - stop after sending count ECHO_REQUEST packets
+
+traceroute address - prints the route that a packet takes to reach the host
+
+SSH means secure shell: provides a secure channel over an unsecured network in a client–server architecture
+Auto login using ssh keys (uses assymetric keys)
+	1. ssh-keygen -t rsa - generate public-private key pair: create ssh key on the machine
+	2. ssh username@remote_host "cat >> ~/.ssh/authorized_keys < ~/.ssha/id_rsa.: transfer the public key generated to the remote host and append it to ~/.ssh/authorized_keys
+
+ssh username@remote_host - ssh connect, default port 22
+	-p - add port to use
+ssh username@remote_host "echo user: $(whoami) - run command on a remote host with ssh
+
+lftp username@host.~>put/get filename - old file transfer protocol, default port 21
+sftp user@domain_name - new file transfer protocol, default port 22
+	-oPort=422 - change port used
+
+scp filename user@host:path - secure copy to a remote machine
+	-r - recursively copy entire directories
+
+port forwarding - enable other computers to connect to a particular service on a remote server using your machine
+ssh -L 8000:www.kernel.org:80 test@test-desktop - forward from my local machine to another machine
+ssh -L 8000:www.kernel.org:80  user@remote_machine - forward it from a remote machine to another machine
+
+reverse port forwarding: a machine is not publicly available from the internet, but I want others to acccess a service in that machine
+ssh -R 8000:www.kernel.org:80 test@test-desktop
+
+sshfs -o allow_other user@remote:/path path_local - mount remote drives
+umount path - unmount remote drive
+
+nc -l 1234 - create listening socket
+nc 1234 - initiate a connection to a remote host
